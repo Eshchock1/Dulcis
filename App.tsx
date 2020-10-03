@@ -42,7 +42,7 @@ render(){
   return (
     <View style={styles.container}>
     <AppStack />
-      <StatusBar style="inverted"/>
+      <StatusBar style="dark"/>
     </View>
   );}
 }

@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, KeyboardAvoidingView,TouchableWithoutFeedback, 
 import firebase from "../firebase";
 import {Form, Item, Label, Input, Button} from 'native-base';
 import { TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler';
-import { SkypeIndicator } from 'react-native-indicators';
+import { WaveIndicator, } from 'react-native-indicators';
 
 
 const LoadingPage = ({navigation}) => {
@@ -22,7 +22,7 @@ useEffect(() => {
 
 return (
     <View style={styles.container}>
-        <SkypeIndicator color='#4ba023' size={(Dimensions.get("window").width + Dimensions.get("window").height) / 10.8}/>
+        <WaveIndicator color='#FFAE6C' size={(Dimensions.get("window").width + Dimensions.get("window").height) / 10.8}/>
     </View>
 )
 }
@@ -30,7 +30,7 @@ return (
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#363940',
     alignItems: 'center',
     justifyContent: 'center',
   }
