@@ -1,15 +1,24 @@
 
 import WelcomePage from '../screens/welcomePage';
+import CameraPage from '../screens/camera';
+import { createStackNavigator, TransitionPresets } from 'react-navigation-stack';
 import { createAppContainer } from 'react-navigation';
-import {createMaterialTopTabNavigator} from 'react-navigation-tabs';
-            
-const LoginStack = createMaterialTopTabNavigator({
+
+const LoginStack = createStackNavigator({
     WelcomePage: {screen: WelcomePage,
         navigationOptions: {
-            tabBarVisible:false,
+            headerShown: false,
+        },
+    },
+    CameraPage: {screen: CameraPage,
+        navigationOptions: {
+            headerShown: false,
         },
     },
 }, {
-    initialRouteName: 'WelcomePage',
+    defaultNavigationOptions: {
+        ...TransitionPresets.RevealFromBottomAndroid,
+    },
+    initialRouteName:'WelcomePage',
 })
 export default createAppContainer(LoginStack);

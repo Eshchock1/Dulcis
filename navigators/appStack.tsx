@@ -7,7 +7,7 @@ import LoadingPage from '../screens/loadingPage';
 const AppStack = createSwitchNavigator({
 LoadingPage: {screen: LoadingPage},
 LoginStack:LoginStack,
-        AppNavigator:AppNavigator,
+AppNavigator:AppNavigator,
 },);
 
 export default createAppContainer(AppStack);

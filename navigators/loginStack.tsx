@@ -10,12 +10,12 @@ const LoginStack = createMaterialTopTabNavigator({
             tabBarVisible:false,
         },
     },
-    CreateAccountPage: {screen: CreateAccountPage,
+    LoginPage: {screen: LoginPage,
         navigationOptions: {
             tabBarVisible:false,
         },
     },
-    LoginPage: {screen: LoginPage,
+    CreateAccountPage: {screen: CreateAccountPage,
         navigationOptions: {
             tabBarVisible:false,
         },
