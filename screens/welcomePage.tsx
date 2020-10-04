@@ -170,9 +170,9 @@ async getLogs() {
 
         
 
-        <View style={{flex:0.58}}>
-        <Text style={{color:'#23262D', paddingTop:35, paddingLeft:30, fontSize:25, fontFamily:'MuliBold'}}>Dulcis</Text>   
-      <View style={{top:40, right:30, position:'absolute'}}>
+        <View style={{flex:0.58,}}>
+        <Text style={{color:'#23262D', paddingTop:(Dimensions.get("window").width + Dimensions.get("window").height) / (1080/25), paddingLeft:30, fontSize:25, fontFamily:'MuliBold'}}>Dulcis</Text>   
+      <View style={{top:(Dimensions.get("window").width + Dimensions.get("window").height) / (1080/30), right:30, position:'absolute'}}>
       <Menu
         style={{backgroundColor:"#23262D"}}
           ref={this.setMenuRef}
@@ -183,21 +183,21 @@ async getLogs() {
         </Menu>
         </View>
 
-      <View style={{backgroundColor:"#323339", width:"87%", alignSelf:"center", height:210, marginTop:30, borderRadius:30, elevation:5,}}>
+      <View style={{backgroundColor:"#323339", width:"87%", alignSelf:"center", height:(Dimensions.get("window").width + Dimensions.get("window").height) / (1080/200), marginTop:(Dimensions.get("window").width + Dimensions.get("window").height) / (1080/20), borderRadius:30, elevation:5,}}>
 
       <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-evenly', paddingTop:12,}}>
       <View style={{flexDirection:'column', alignItems:'center'}}>
-  <Text style={{color:'white', fontSize:30, fontFamily:'MuliBold',}}>{this.state.todayAvg}</Text>
+  <Text style={{color:'white', fontSize:(Dimensions.get("window").width + Dimensions.get("window").height) / (1080/30), fontFamily:'MuliBold',}}>{this.state.todayAvg?this.state.todayAvg:0}</Text>
       <Text style={{color:'white', fontSize:11, fontFamily:'MuliRegular',}}>today's avg.</Text>
       </View>
       
       <View style={{flexDirection:'column', alignItems:'center'}}>
-      <Text style={{color:'white', fontSize:30, fontFamily:'MuliBold',}}>{this.state.weekAvg}</Text>
+      <Text style={{color:'white', fontSize:(Dimensions.get("window").width + Dimensions.get("window").height) / (1080/30), fontFamily:'MuliBold',}}>{this.state.weekAvg?this.state.weekAvg:0}</Text>
       <Text style={{color:'white', fontSize:11, fontFamily:'MuliRegular',}}>7 day avg.</Text>
       </View>
       
       <View style={{flexDirection:'column', alignItems:'center'}}>
-      <Text style={{color:'white', fontSize:30, fontFamily:'MuliBold',}}>{this.state.monthAvg}</Text>
+      <Text style={{color:'white', fontSize:(Dimensions.get("window").width + Dimensions.get("window").height) / (1080/30), fontFamily:'MuliBold',}}>{this.state.monthAvg?this.state.monthAvg:0}</Text>
       <Text style={{color:'white', fontSize:11, fontFamily:'MuliRegular',}}>30 day avg.</Text>
       </View>
       </View>
@@ -226,7 +226,7 @@ async getLogs() {
       ]
     }}
     width={280} // from react-native
-    height={120}
+    height={(Dimensions.get("window").width + Dimensions.get("window").height) / (1080/100)}
     xLabelsOffset={10}
     yAxisInterval={1} // optional, defaults to 1
     chartConfig={{
@@ -259,17 +259,17 @@ async getLogs() {
 
       </View>
 
-    <View style={{flexDirection:"row", alignItems:'center', justifyContent:"space-evenly", marginTop:25,}}>
+    <View style={{flexDirection:"row", alignItems:'center', justifyContent:"space-evenly", height:"35%"}}>
     <View style={{alignItems:'center', justifyContent:'center'}}>
-    <TouchableOpacity activeOpacity={0.8} onPress={()=> {this.setState({modalOpen:true});this.getTime()}}><View style={{width:75, height:75, borderRadius:75, backgroundColor:"#23262D", alignItems:'center', justifyContent:'center', elevation:5,}}><AntDesign name="plus" size={30} color="white" /></View></TouchableOpacity>
+    <TouchableOpacity activeOpacity={0.8} onPress={()=> {this.setState({modalOpen:true});this.getTime()}}><View style={{width:(Dimensions.get("window").width + Dimensions.get("window").height) / (1080/75), height:(Dimensions.get("window").width + Dimensions.get("window").height) / (1080/75), borderRadius:(Dimensions.get("window").width + Dimensions.get("window").height) / (1080/75), backgroundColor:"#23262D", alignItems:'center', justifyContent:'center', elevation:5,}}><AntDesign name="plus" size={30} color="white" /></View></TouchableOpacity>
     <Text style={{color:'#23262D', fontSize:16, fontFamily:'MuliBold',marginTop:5,}}>New Log</Text>
     </View>
     <View style={{alignItems:'center', justifyContent:'center'}}>
-    <TouchableOpacity activeOpacity={0.8} onPress={()=> this.props.navigation.navigate('CameraPage')}><View style={{width:75, height:75, borderRadius:75, backgroundColor:"#23262D", alignItems:'center', justifyContent:'center', elevation:5,}}><AntDesign name="camerao" size={30} color="white" /></View></TouchableOpacity>
+    <TouchableOpacity activeOpacity={0.8} onPress={()=> this.props.navigation.navigate('CameraPage')}><View style={{width:(Dimensions.get("window").width + Dimensions.get("window").height) / (1080/75), height:(Dimensions.get("window").width + Dimensions.get("window").height) / (1080/75), borderRadius:(Dimensions.get("window").width + Dimensions.get("window").height) / (1080/75), backgroundColor:"#23262D", alignItems:'center', justifyContent:'center', elevation:5,}}><AntDesign name="camerao" size={30} color="white" /></View></TouchableOpacity>
     <Text style={{color:'#23262D', fontSize:16, fontFamily:'MuliBold',marginTop:5,}}>Food AI</Text>
     </View>
     <View style={{alignItems:'center', justifyContent:'center'}}>
-    <TouchableOpacity activeOpacity={0.8} onPress={()=> this.props.navigation.navigate('ChatBotPage')}><View style={{width:75, height:75, borderRadius:75, backgroundColor:"#23262D", alignItems:'center', justifyContent:'center', elevation:5,}}><AntDesign name="message1" size={30} color="white" /></View></TouchableOpacity>
+    <TouchableOpacity activeOpacity={0.8} onPress={()=> this.props.navigation.navigate('ChatBotPage')}><View style={{width:(Dimensions.get("window").width + Dimensions.get("window").height) / (1080/75), height:(Dimensions.get("window").width + Dimensions.get("window").height) / (1080/75), borderRadius:(Dimensions.get("window").width + Dimensions.get("window").height) / (1080/75), backgroundColor:"#23262D", alignItems:'center', justifyContent:'center', elevation:5,}}><AntDesign name="message1" size={30} color="white" /></View></TouchableOpacity>
     <Text style={{color:'#23262D', fontSize:16, fontFamily:'MuliBold',marginTop:5,}}>Chat</Text>
     </View>
     
@@ -283,6 +283,7 @@ async getLogs() {
 
         <View style={{flex:0.42, backgroundColor:"#363940", borderTopLeftRadius:40, borderTopRightRadius:40, elevation:5, paddingHorizontal:20,}}>
         <Text style={{color:'white',paddingTop:25, fontSize:23, fontFamily:'MuliSemi', marginBottom:15,paddingLeft:10,}}>Blood Sugar</Text>
+        {this.state.logs.length == 0?<Text style={{color:'white',paddingTop:25, fontSize:23, fontFamily:'MuliRegular', marginBottom:15,paddingLeft:10, opacity:0.7}}>Click 'New Log' to get started</Text>:null}
         <ScrollView>
           {
             this.state.logs.map((item) => 

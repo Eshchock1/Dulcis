@@ -55,13 +55,13 @@ return (
   <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
   <KeyboardAvoidingView // adjust the value here if you need more padding
     behavior="position"
-    keyboardVerticalOffset={Platform.select({ios: () => -(Dimensions.get("window").width + Dimensions.get("window").height) / (1080/200), android: () => -(Dimensions.get("window").width + Dimensions.get("window").height) / (1080/100),})()} style={styles.container}>
+    keyboardVerticalOffset={Platform.select({ios: () => -0, android: () => -(Dimensions.get("window").width + Dimensions.get("window").height) / (1080/100),})()} style={styles.container}>
         
       <Text style={{color:'white', paddingTop:30, paddingLeft:30, fontSize:25, fontFamily:'MuliSemi'}}>Dulcis</Text>
       <View style={{width:300, height:300, borderRadius:300, position:"absolute", top:-100, right:-100, borderColor:"#FFAE6C", borderWidth:60,}}></View>
-      <View style={{paddingHorizontal:30, marginTop:80,}}>
-      <Text style={{color:'white', fontSize:30, fontFamily:'MuliSemi', marginBottom:20,}}>Create{'\n'}Account</Text>
-      <Text style={{color:'white', fontSize:18, paddingTop:5, fontFamily:'MuliLight', opacity:0.8}}>Create a free acount and get full access to our revolutionary AI and ML powered platform</Text>
+      <View style={{paddingHorizontal:30, marginTop:(Dimensions.get("window").width + Dimensions.get("window").height) / (1080/55),}}>
+      <Text style={{color:'white', fontSize:(Dimensions.get("window").width + Dimensions.get("window").height) / (1080/30), fontFamily:'MuliSemi', marginBottom:(Dimensions.get("window").width + Dimensions.get("window").height) / (1080/10),}}>Create{'\n'}Account</Text>
+      <Text style={{color:'white', fontSize:(Dimensions.get("window").width + Dimensions.get("window").height) / (1080/18), paddingTop:5, fontFamily:'MuliLight', opacity:0.8}}>Create a free acount and get full access to our revolutionary AI and ML powered platform</Text>
       </View>          
       
       <Form style={{alignItems:"center", marginTop:25, paddingHorizontal:30,}}>

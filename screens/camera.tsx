@@ -12,10 +12,7 @@ import firebase from "../firebase";
 export default class WelcomePage extends React.Component {   
     
     componentDidMount(){
-        (async () => {
-            let { status } = await Camera.requestPermissionsAsync();
-            this.setState({hasPermission:status==="granted"});
-        })
+        this.permission();
         if (this.state.hasPermission === null) {
             return <View />;
           }
@@ -24,6 +21,12 @@ export default class WelcomePage extends React.Component {
           }
     }
 
+    async permission(){
+      
+        let { status } = await Camera.requestPermissionsAsync();
+        this.setState({hasPermission:status==="granted"});
+
+    }
     state = {
         hasPermission:false,
         camera: Camera.Constants.Type,
@@ -158,9 +161,10 @@ async displayAnswer(identifiedImage:any, obj) {
         style={{
           height: (Dimensions.get("window").height - (Dimensions.get("window").width * 4) / 3) / 3,
           backgroundColor: "#0a0a0a",
+          justifyContent:'center'
         }}>
-            <Text style={{color:'white', paddingTop:35, paddingLeft:30, fontSize:25, fontFamily:'MuliBold'}}>Dulcis</Text>
-      <TouchableOpacity style={{top:40, right:30, position:'absolute'}}  onPress={()=>this.props.navigation.goBack()}><AntDesign name="back" size={30} color="white" /></TouchableOpacity>
+            <Text style={{color:'white', paddingLeft:30, fontSize:25, fontFamily:'MuliBold'}}>Dulcis</Text>
+      <TouchableOpacity style={{right:30, position:'absolute'}}  onPress={()=>this.props.navigation.goBack()}><AntDesign name="back" size={30} color="white" /></TouchableOpacity>
         </View>
       <Camera
         style={{ flex: 1 }}

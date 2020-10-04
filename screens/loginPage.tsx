@@ -53,13 +53,13 @@ const LoginPage = ({ navigation}) => {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView // adjust the value here if you need more padding
         behavior="position"
-        keyboardVerticalOffset={Platform.select({ios: () => -(Dimensions.get("window").width + Dimensions.get("window").height) / (1080/200), android: () => -(Dimensions.get("window").width + Dimensions.get("window").height) / (1080/100),})()} style={styles.container}>
+        keyboardVerticalOffset={Platform.select({ios: () => 0, android: () => -(Dimensions.get("window").width + Dimensions.get("window").height) / (1080/100),})()} style={styles.container}>
             
           <Text style={{color:'white', paddingTop:30, paddingLeft:30, fontSize:25, fontFamily:'MuliSemi'}}>Dulcis</Text>
           <View style={{width:300, height:300, borderRadius:300, position:"absolute", top:-100, right:-100, borderColor:"#FFAE6C", borderWidth:60,}}></View>
-          <View style={{paddingHorizontal:30, marginTop:120,}}>
-          <Text style={{color:'white', fontSize:30, fontFamily:'MuliSemi', marginBottom:20,}}>Welcome{'\n'}Back</Text>
-          <Text style={{color:'white', fontSize:18, paddingTop:5, fontFamily:'MuliLight', opacity:0.8}}>Good to see you. Sign back in to you Dulcis account and get access to all our premium features</Text>
+          <View style={{paddingHorizontal:30, marginTop:(Dimensions.get("window").width + Dimensions.get("window").height) / (1080/75),}}>
+          <Text style={{color:'white', fontSize:(Dimensions.get("window").width + Dimensions.get("window").height) / (1080/30), fontFamily:'MuliSemi', marginBottom:(Dimensions.get("window").width + Dimensions.get("window").height) / (1080/10),}}>Welcome{'\n'}Back</Text>
+          <Text style={{color:'white', fontSize:(Dimensions.get("window").width + Dimensions.get("window").height) / (1080/18), paddingTop:5, fontFamily:'MuliLight', opacity:0.8}}>Good to see you. Sign back in to you Dulcis account and get access to all our premium features</Text>
           </View>          
           
           <Form style={{alignItems:"center", marginTop:50, paddingHorizontal:30,}}>
@@ -85,7 +85,7 @@ const LoginPage = ({ navigation}) => {
       </Form>
   <Text style={{textAlign:'center',marginHorizontal:20, paddingTop:20, color:'tomato', fontSize:15,fontFamily:'MuliLight', opacity:0.8}}>{errorText}</Text>
       <Button style={{backgroundColor:'#FFAE6C', marginHorizontal:30, marginTop:20, borderRadius:15, shadowColor: "#363940", shadowOffset: {width: 0, height: 2,}, shadowOpacity: 0.25, shadowRadius: 3.84, elevation: 5,}} full onPress={()=> loginUser(email, password)}><Text style={{color:'#363940',fontSize:18, fontFamily:'MuliBold'}}>SIGN IN</Text></Button>
-      <Text style={{textAlign:'center',marginHorizontal:30, color:'white', marginTop:20, fontSize:15, paddingTop:5, fontFamily:'MuliLight', opacity:0.8}}>Dont have an account yet? <TouchableWithoutFeedback onPress={()=> navigation.navigate('CreateAccountPage')}><Text style={{textDecorationLine:"underline"}}>Create Account.</Text></TouchableWithoutFeedback></Text>
+      <Text style={{textAlign:'center',marginHorizontal:10, color:'white', marginTop:20, fontSize:15, paddingTop:5, fontFamily:'MuliLight', opacity:0.8}}>Dont have an account yet? <TouchableWithoutFeedback onPress={()=> navigation.navigate('CreateAccountPage')}><Text style={{textDecorationLine:"underline"}}>Create Account.</Text></TouchableWithoutFeedback></Text>
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
