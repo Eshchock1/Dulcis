@@ -4,7 +4,8 @@ import React, { useState, useEffect, Component  } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import AppStack from './navigators/appStack';
 import * as Font from "expo-font";
-
+import { Dialogflow_V2 } from 'react-native-dialogflow';
+import { dialogflowConfig } from './env';
 export default class App extends Component {
   
   constructor(props:any) {
@@ -15,6 +16,13 @@ export default class App extends Component {
   }
   
   async componentDidMount() {
+    
+  Dialogflow_V2.setConfiguration(
+    dialogflowConfig.client_email,
+    dialogflowConfig.private_key,
+    Dialogflow_V2.LANG_ENGLISH_US,
+    dialogflowConfig.project_id
+  );
     try {
       await Font.loadAsync({
         MuliBlack: require("./assets/fonts/muli/Muli-Black.ttf"),

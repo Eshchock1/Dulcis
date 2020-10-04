@@ -127,7 +127,7 @@ export default class WelcomePage extends Component {
     <Text style={{color:'#23262D', fontSize:16, fontFamily:'MuliBold',marginTop:5,}}>Food AI</Text>
     </View>
     <View style={{alignItems:'center', justifyContent:'center'}}>
-    <TouchableOpacity activeOpacity={0.8}><View style={{width:75, height:75, borderRadius:75, backgroundColor:"#23262D", alignItems:'center', justifyContent:'center', elevation:5,}}><AntDesign name="message1" size={30} color="white" /></View></TouchableOpacity>
+    <TouchableOpacity activeOpacity={0.8} onPress={()=> this.props.navigation.navigate('ChatBotPage')}><View style={{width:75, height:75, borderRadius:75, backgroundColor:"#23262D", alignItems:'center', justifyContent:'center', elevation:5,}}><AntDesign name="message1" size={30} color="white" /></View></TouchableOpacity>
     <Text style={{color:'#23262D', fontSize:16, fontFamily:'MuliBold',marginTop:5,}}>Chat</Text>
     </View>
     
