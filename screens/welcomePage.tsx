@@ -47,9 +47,9 @@ async getLogs() {
       let todayTotal = 0
       let weekAvg = 0
       let monthAvg = 0
-      todaysLogs.map(log => todayTotal += parseInt(log.bs, 10))
-      weeksLogs.map(log => weekAvg += parseInt(log.bs, 10))
-      monthsLogs.map(log => monthAvg += parseInt(log.bs, 10))
+      todaysLogs.map(log => todayTotal += Number(log.bs))
+      weeksLogs.map(log => weekAvg += Number(log.bs))
+      monthsLogs.map(log => monthAvg += Number(log.bs))
       this.setState({todayAvg:Math.round(todayTotal/todaysLogs.length * 10) / 10})
       this.setState({weekAvg:Math.round(weekAvg/weeksLogs.length * 10) / 10})
       this.setState({monthAvg:Math.round(monthAvg/monthsLogs.length * 10) / 10})
@@ -78,8 +78,8 @@ async getLogs() {
       pmam = "PM"
       hours -= 12
     }
-    const daysDict = {1:"Mon", 2:"Tues",3:"Wed",4:"Thurs",5:"Fri",6:"Sat",7:"Sun",}
-    const monthsDict = {0:"Jan", 1:"Feb",2:"Mar",2:"April", 4:"May",5:"June",6:"July",7:"Aug",8:"Sep",9:"Oct",10:"Nov",11:"Dec",}
+    const daysDict = {1:"Mon", 2:"Tues",3:"Wed",4:"Thurs",5:"Fri",6:"Sat",0:"Sun",}
+    const monthsDict = {0:"Jan", 1:"Feb",2:"Mar",3:"April", 4:"May",5:"June",6:"July",7:"Aug",8:"Sep",9:"Oct",10:"Nov",11:"Dec",}
     const time = hours + ":" + minutes + " " + pmam
     const dayFormatted = daysDict[dayOfWeek] + ", " + monthsDict[month] + " " + day
 
@@ -99,13 +99,13 @@ async getLogs() {
       pmam = "PM"
       hours -= 12
     }
-    const daysDict = {1:"Mon", 2:"Tues",3:"Wed",4:"Thurs",5:"Fri",6:"Sat",7:"Sun",}
-    const monthsDict = {0:"Jan", 1:"Feb",2:"Mar",2:"April", 4:"May",5:"June",6:"July",7:"Aug",8:"Sep",9:"Oct",10:"Nov",11:"Dec",}
+    const daysDict = {1:"Mon", 2:"Tues",3:"Wed",4:"Thurs",5:"Fri",6:"Sat",0:"Sun",}
+    const monthsDict = {0:"Jan", 1:"Feb",2:"Mar",3:"April", 4:"May",5:"June",6:"July",7:"Aug",8:"Sep",9:"Oct",10:"Nov",11:"Dec",}
     const time = hours + ":" + minutes + " " + pmam
     const bs = this.state.BloodSugar
     const hrs = date.getHours();
     const dayFormatted = daysDict[dayOfWeek] + ", " + monthsDict[month] + " " + day
-    let updatedLogs = [{time:time, date:dayFormatted, hrs:hrs, bs:bs, timeStamp:Date.now(),}, ...this.state.logs]
+    let updatedLogs = [{time:time, date:dayFormatted, hrs:hrs, bs:bs, timeStamp:date.getTime(),}, ...this.state.logs]
 
     this.setState({logs:updatedLogs})
     firebase.firestore().collection(firebase.auth().currentUser.uid).doc().set({
@@ -113,7 +113,7 @@ async getLogs() {
       date:dayFormatted,
       hrs:hrs,
       bs:bs,
-      timeStamp:Date.now(),
+      timeStamp:date.getTime(),
     })
 
     this.calcAvgs();
@@ -289,7 +289,7 @@ async getLogs() {
             
             <TouchableOpacity activeOpacity={0.5} style={{flexDirection:'row', width:"100%", height:70, marginBottom:15,}}>
               <View style={{flex:0.25, justifyContent:'center', alignItems:'center'}}>
-                <View style={{height:65, width:65, backgroundColor:'#646874', borderRadius:25,justifyContent:'center', alignItems:'center'}}>{item.hrs >= 18 || item.hrs <=5?<Feather name="moon" size={37} color="#FFAE6C" />:<Feather name="sun" size={37} color="#FFAE6C" />}</View>
+                <View style={{height:65, width:65, backgroundColor:'#646874', borderRadius:25,justifyContent:'center', alignItems:'center'}}>{item.hrs >= 17 || item.hrs <=4?<Feather name="moon" size={37} color="#FFAE6C" />:<Feather name="sun" size={37} color="#FFAE6C" />}</View>
               </View>
               <View style={{flex:0.5,justifyContent:'center',}}>
           <Text style={{color:'white', opacity:0.9, fontSize:17, fontFamily:'MuliRegular', paddingLeft:10,}}>{item.date}</Text>

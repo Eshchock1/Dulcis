@@ -6,7 +6,7 @@ import { EvilIcons } from "@expo/vector-icons";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { WaveIndicator, } from 'react-native-indicators';
 import * as ImagePicker from "expo-image-picker";
-import { render } from "react-dom";
+import firebase from "../firebase";
 
 
 export default class WelcomePage extends React.Component {   
@@ -23,13 +23,6 @@ export default class WelcomePage extends React.Component {
             return <Text>No access to camera</Text>;
           }
     }
-//     const [hasPermission, setHasPermission] = useState(false);
-//   let [camera, setCamera] = useState(Camera.Constants.Type);
-//   let [photoTaken, setPhotoTaken] = useState(false);
-//   let [ingredients, setIngredients] = useState([]);
-//   let [ingredientsString, setIngredientsString] = useState("");
-//   const [type, setType] = useState(Camera.Constants.Type.back);
-//   const refRBSheet = useRef();
 
     state = {
         hasPermission:false,
@@ -38,11 +31,8 @@ export default class WelcomePage extends React.Component {
         ingredients:[],
         ingredientsString:'',
         type: Camera.Constants.Type.back,
+        avgGi:0,
     }
-
-    
-
-
  
 
   async pickImageCameraRoll() {
@@ -80,24 +70,28 @@ identifyImage(imageData) {
               this.setState({ingredients:concatList});
         }
         }
-        this.displayAnswer(this.state.ingredients);
+        this.displayAnswer(this.state.ingredients, this);
       }
     );
   }
 
-displayAnswer(identifiedImage:any) {
-    var dict = {
-      carrot: 30,
-      tomato: 25,
-      eggplant: 55,
-      potato: 10,
-    };
-    // setIngredientsString("bruh");
-    this.setState({ingredientsString:''})
+async displayAnswer(identifiedImage:any, obj) {
+    
+    
+  this.setState({avgGi:0})
+  this.setState({ingredientsString:''})
     let total = 0;
-    let item = 0;
-    let tempString2 = '';
+    let items = 0;
     for (i = 0; i < identifiedImage.length; i++) {
+      let GI = await firebase.firestore().collection('food').doc(identifiedImage[i])
+      GI.get().then(function(doc) {
+        if (doc.exists) {
+          total += Number(doc.data().gi)
+          items += 1
+          obj.setState({avgGi:Math.round(total/items * 10) / 10})
+        }
+    })
+
         if (i==identifiedImage.length - 1) {
             let tempString1 = this.state.ingredientsString + identifiedImage[i]
             this.setState({ingredientsString:tempString1})
@@ -106,17 +100,7 @@ displayAnswer(identifiedImage:any) {
             let tempString2 = this.state.ingredientsString + identifiedImage[i] + ", "
             this.setState({ingredientsString:tempString2})
             }
-        // console.log(identifiedImage[i])
-        //   if (dict[identifiedImage[i]]) {
-    //     total += dict[identifiedImage[i]];
-    //     item += 1;
-    //   }
-    }
-
-    // let avg = 0;
-    // if (total > 0) {
-    //   avg = total / item;
-    // }
+          }
     this.setState({photoTaken:false});
     this.RBSheet.open()
   }
@@ -152,11 +136,11 @@ displayAnswer(identifiedImage:any) {
                 <Text style={{color:'white', opacity:0.7, fontSize:14, fontFamily:'MuliRegular',}}>Tues, Aug 23 6:15 PM</Text>
                 </View>
                 <View style={{flex:0.3, alignItems:'center', justifyContent:'center'}}>
-                <Text style={{color:'#FFAE6C', fontSize:40, fontFamily:'MuliBold',}}>56.5</Text>
+      <Text style={{color:'#FFAE6C', fontSize:40, fontFamily:'MuliBold',}}>{this.state.avgGi}</Text>
                 </View>
             </View>
             <View style={{flexDirection:'column', flex:0.7,paddingHorizontal:20,}}>
-            <Text style={{color:'white', opacity:0.9, fontSize:16, fontFamily:'MuliRegular',}}>A glycemic index of 56.5 is very high. We recommend that you dont eat this meal.</Text>
+            {this.state.avgGi < 40?<Text style={{color:'white', opacity:0.9, fontSize:16, fontFamily:'MuliRegular',}}>An average glycemic index of {this.state.avgGi} is quite low. This is a great meal for you to eat!</Text>:this.state.avgGi >= 56?<Text style={{color:'white', opacity:0.9, fontSize:16, fontFamily:'MuliRegular',}}>An average glycemic index of {this.state.avgGi} is very high. We recommend that you do not eat this meal.</Text>:<Text style={{color:'white', opacity:0.9, fontSize:16, fontFamily:'MuliRegular',}}>An average glycemic index of {this.state.avgGi} is pretty normal. This is a good meal for you to eat!</Text>}
             <Text style={{color:'white', opacity:0.9, fontSize:16, fontFamily:'MuliRegular', marginTop:10,}}>Food detected:</Text>
     <Text style={{color:'white', opacity:0.7, fontSize:14, fontFamily:'MuliRegular', marginTop:5,}}>{this.state.ingredientsString}</Text>
             </View>
