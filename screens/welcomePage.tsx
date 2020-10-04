@@ -1,11 +1,12 @@
 import React, { useState, useEffect, Component} from 'react';
-import { StyleSheet, Text, View, KeyboardAvoidingView,TouchableWithoutFeedback, Keyboard, ScrollView, Dimensions, Image, Modal, Alert} from 'react-native';
+import { StyleSheet, Text, View, KeyboardAvoidingView,TouchableWithoutFeedback, Keyboard, ScrollView, Dimensions, Image, Modal, Alert,TouchableOpacity} from 'react-native';
 import firebase from "../firebase";
 import {Form, Item, Label, Input, Button} from 'native-base';
-import { TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler';
+// import { TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { AntDesign } from '@expo/vector-icons'; 
 import { round } from 'react-native-reanimated';
+import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 import {
   LineChart,
   BarChart,
@@ -31,17 +32,48 @@ export default class WelcomePage extends Component {
       {date:"Tues, Aug 22", hrs:6, time:"6:15 AM", bs:8.6},
       {date:"Tues, Aug 22", hrs:18, time:"6:15 PM", bs:7.5},
       {date:"Tues, Aug 22", hrs:6, time:"6:15 AM", bs:18.5}
-    ]
+    ],
+    _menu:null,
   }
 
+
+  
+ 
+  setMenuRef = ref => {
+    this.setState({_menu:ref})
+  };
+ 
+  hideMenu = () => {
+    this.state._menu.hide();
+  };
+ 
+  showMenu = () => {
+    this.state._menu.show();
+  };
 
   render(){
   return (
       <View style={styles.container}>
+
+
+
+
+
+        
+
         <View style={{flex:0.58}}>
-        <Text style={{color:'#23262D', paddingTop:35, paddingLeft:30, fontSize:25, fontFamily:'MuliBold'}}>Dulcis</Text>
-      <MaterialCommunityIcons style={{top:40, right:30, position:'absolute'}} name="settings-outline" size={30} color="#23262D" />      
-      
+        <Text style={{color:'#23262D', paddingTop:35, paddingLeft:30, fontSize:25, fontFamily:'MuliBold'}}>Dulcis</Text>   
+      <View style={{top:40, right:30, position:'absolute'}}>
+      <Menu
+        style={{backgroundColor:"#23262D"}}
+          ref={this.setMenuRef}
+          button={<TouchableOpacity onPress={this.showMenu}><MaterialCommunityIcons name="settings-outline" size={30} color="#23262D" /></TouchableOpacity>}
+        >
+          <MenuItem onPress={this.hideMenu}><Text style={{fontFamily:"MuliBold", color:"white"}}>Eshwar</Text></MenuItem>
+          <MenuItem onPress={()=>this.signOut()}><Text style={{fontFamily:"MuliBold", color:"#FFAE6C"}}>Sign Out</Text></MenuItem>
+        </Menu>
+        </View>
+
       <View style={{backgroundColor:"#323339", width:"87%", alignSelf:"center", height:210, marginTop:30, borderRadius:30, elevation:5,}}>
 
       <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-evenly', paddingTop:12,}}>
@@ -169,7 +201,6 @@ export default class WelcomePage extends Component {
       </View>
   );}
 }
-      {/* <Button onPress={()=>this.signOut()}><Text>Sign Out</Text></Button> */}
 
 const styles = StyleSheet.create({
   container: {
