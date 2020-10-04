@@ -25,21 +25,45 @@ export default class WelcomePage extends Component {
 
   // firebase.firestore().collection(userInfo.user.uid).doc().set({})
 
+  componentDidMount(){
+    this.getLogs()
+  }
+
+
+async getLogs() {
+    const logs = await firebase.firestore().collection(firebase.auth().currentUser.uid).orderBy("timeStamp", "desc").get()
+    this.setState({logs:logs.docs.map(doc => doc.data())});
+    this.calcAvgs();
+    }
+
+    async calcAvgs() {
+      const todayLogs = await firebase.firestore().collection(firebase.auth().currentUser.uid).where('timeStamp', '>=', Date.now() - 86400000).orderBy("timeStamp", "desc").get()
+    const todaysLogs = todayLogs.docs.map(doc => doc.data())
+    const weekLogs = await firebase.firestore().collection(firebase.auth().currentUser.uid).where('timeStamp', '>=', Date.now() - 604800000).orderBy("timeStamp", "desc").get()
+    const weeksLogs = weekLogs.docs.map(doc => doc.data())
+    const monthLogs = await firebase.firestore().collection(firebase.auth().currentUser.uid).where('timeStamp', '>=', Date.now() - 2592000000).orderBy("timeStamp", "desc").get()
+    const monthsLogs = monthLogs.docs.map(doc => doc.data())
+
+      let todayTotal = 0
+      let weekAvg = 0
+      let monthAvg = 0
+      todaysLogs.map(log => todayTotal += parseInt(log.bs, 10))
+      weeksLogs.map(log => weekAvg += parseInt(log.bs, 10))
+      monthsLogs.map(log => monthAvg += parseInt(log.bs, 10))
+      this.setState({todayAvg:Math.round(todayTotal/todaysLogs.length * 10) / 10})
+      this.setState({weekAvg:Math.round(weekAvg/weeksLogs.length * 10) / 10})
+      this.setState({monthAvg:Math.round(monthAvg/monthsLogs.length * 10) / 10})
+    }
 
   state = {
-    dates: [
-      {date:"Tues, Aug 22", hrs:6, time:"6:15 AM", bs:4.5},
-      {date:"Tues, Aug 22", hrs:18, time:"6:15 PM", bs:6.5},
-      {date:"Tues, Aug 22", hrs:6, time:"6:15 AM", bs:2.2},
-      {date:"Tues, Aug 22", hrs:18, time:"6:15 PM", bs:10.1},
-      {date:"Tues, Aug 22", hrs:6, time:"6:15 AM", bs:8.6},
-      {date:"Tues, Aug 22", hrs:18, time:"6:15 PM", bs:7.5},
-      {date:"Tues, Aug 22", hrs:6, time:"6:15 AM", bs:18.5}
-    ],
     _menu:null,
     modalOpen:false,
     BloodSugar:0,
     CurrentTimeDate:'',
+    logs: [],
+    todayAvg:0,
+    weekAvg:0,
+    monthAvg:0,
   }
 
   getTime = () => {
@@ -79,14 +103,22 @@ export default class WelcomePage extends Component {
     const monthsDict = {0:"Jan", 1:"Feb",2:"Mar",2:"April", 4:"May",5:"June",6:"July",7:"Aug",8:"Sep",9:"Oct",10:"Nov",11:"Dec",}
     const time = hours + ":" + minutes + " " + pmam
     const bs = this.state.BloodSugar
-    const hrs = hours
+    const hrs = date.getHours();
     const dayFormatted = daysDict[dayOfWeek] + ", " + monthsDict[month] + " " + day
+    let updatedLogs = [{time:time, date:dayFormatted, hrs:hrs, bs:bs, timeStamp:Date.now(),}, ...this.state.logs]
+
+    this.setState({logs:updatedLogs})
     firebase.firestore().collection(firebase.auth().currentUser.uid).doc().set({
       time:time,
       date:dayFormatted,
       hrs:hrs,
-      bs:bs
+      bs:bs,
+      timeStamp:Date.now(),
     })
+
+    this.calcAvgs();
+
+
     console.log('added')
   }
  
@@ -155,17 +187,17 @@ export default class WelcomePage extends Component {
 
       <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-evenly', paddingTop:12,}}>
       <View style={{flexDirection:'column', alignItems:'center'}}>
-      <Text style={{color:'white', fontSize:30, fontFamily:'MuliBold',}}>7.4</Text>
+  <Text style={{color:'white', fontSize:30, fontFamily:'MuliBold',}}>{this.state.todayAvg}</Text>
       <Text style={{color:'white', fontSize:11, fontFamily:'MuliRegular',}}>today's avg.</Text>
       </View>
       
       <View style={{flexDirection:'column', alignItems:'center'}}>
-      <Text style={{color:'white', fontSize:30, fontFamily:'MuliBold',}}>8.5</Text>
+      <Text style={{color:'white', fontSize:30, fontFamily:'MuliBold',}}>{this.state.weekAvg}</Text>
       <Text style={{color:'white', fontSize:11, fontFamily:'MuliRegular',}}>7 day avg.</Text>
       </View>
       
       <View style={{flexDirection:'column', alignItems:'center'}}>
-      <Text style={{color:'white', fontSize:30, fontFamily:'MuliBold',}}>7.9</Text>
+      <Text style={{color:'white', fontSize:30, fontFamily:'MuliBold',}}>{this.state.monthAvg}</Text>
       <Text style={{color:'white', fontSize:11, fontFamily:'MuliRegular',}}>30 day avg.</Text>
       </View>
       </View>
@@ -182,12 +214,13 @@ export default class WelcomePage extends Component {
       datasets: [
         {
           data: [
-            8,
-            10,
-            15.2,
-            16,
-            12,
-            10,
+            this.state.logs[6]?this.state.logs[6].bs:0,
+            this.state.logs[5]?this.state.logs[5].bs:0,
+            this.state.logs[4]?this.state.logs[4].bs:0,
+            this.state.logs[3]?this.state.logs[3].bs:0,
+            this.state.logs[2]?this.state.logs[2].bs:0,
+            this.state.logs[1]?this.state.logs[1].bs:0,
+            this.state.logs[0]?this.state.logs[0].bs:0,
           ]
         }
       ]
@@ -252,7 +285,7 @@ export default class WelcomePage extends Component {
         <Text style={{color:'white',paddingTop:25, fontSize:23, fontFamily:'MuliSemi', marginBottom:15,paddingLeft:10,}}>Blood Sugar</Text>
         <ScrollView>
           {
-            this.state.dates.map((item) => 
+            this.state.logs.map((item) => 
             
             <TouchableOpacity activeOpacity={0.5} style={{flexDirection:'row', width:"100%", height:70, marginBottom:15,}}>
               <View style={{flex:0.25, justifyContent:'center', alignItems:'center'}}>
