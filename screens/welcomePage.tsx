@@ -1,10 +1,11 @@
 import React, { useState, useEffect, Component} from 'react';
-import { StyleSheet, Text, View, KeyboardAvoidingView,TouchableWithoutFeedback, Keyboard, ScrollView, Dimensions, Image, Modal, Alert,TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View, KeyboardAvoidingView,TouchableWithoutFeedback, Keyboard, ScrollView, Dimensions, Image, Alert,TouchableOpacity} from 'react-native';
 import firebase from "../firebase";
 import {Form, Item, Label, Input, Button} from 'native-base';
 // import { TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { AntDesign } from '@expo/vector-icons'; 
+import Modal from 'react-native-modal';
 import { round } from 'react-native-reanimated';
 import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 import {
@@ -22,6 +23,8 @@ export default class WelcomePage extends Component {
     this.props.navigation.navigate('SplashPage');
   }
 
+  // firebase.firestore().collection(userInfo.user.uid).doc().set({})
+
 
   state = {
     dates: [
@@ -34,10 +37,58 @@ export default class WelcomePage extends Component {
       {date:"Tues, Aug 22", hrs:6, time:"6:15 AM", bs:18.5}
     ],
     _menu:null,
+    modalOpen:false,
+    BloodSugar:0,
+    CurrentTimeDate:'',
+  }
+
+  getTime = () => {
+    const date = new Date()
+    let pmam = "AM"
+    let hours = date.getHours()
+    let minutes = date.getMinutes()
+    let dayOfWeek  = date.getDay()
+    let day = date.getDate();
+    let month = date.getMonth();
+    if (date.getHours() > 12) {
+      pmam = "PM"
+      hours -= 12
+    }
+    const daysDict = {1:"Mon", 2:"Tues",3:"Wed",4:"Thurs",5:"Fri",6:"Sat",7:"Sun",}
+    const monthsDict = {0:"Jan", 1:"Feb",2:"Mar",2:"April", 4:"May",5:"June",6:"July",7:"Aug",8:"Sep",9:"Oct",10:"Nov",11:"Dec",}
+    const time = hours + ":" + minutes + " " + pmam
+    const dayFormatted = daysDict[dayOfWeek] + ", " + monthsDict[month] + " " + day
+
+    this.setState({CurrentTimeDate:dayFormatted + " " + time})
   }
 
 
-  
+  addLog = () => {
+    const date = new Date()
+    let pmam = "AM"
+    let hours = date.getHours()
+    let minutes = date.getMinutes()
+    let dayOfWeek  = date.getDay()
+    let day = date.getDate();
+    let month = date.getMonth();
+    if (date.getHours() > 12) {
+      pmam = "PM"
+      hours -= 12
+    }
+    const daysDict = {1:"Mon", 2:"Tues",3:"Wed",4:"Thurs",5:"Fri",6:"Sat",7:"Sun",}
+    const monthsDict = {0:"Jan", 1:"Feb",2:"Mar",2:"April", 4:"May",5:"June",6:"July",7:"Aug",8:"Sep",9:"Oct",10:"Nov",11:"Dec",}
+    const time = hours + ":" + minutes + " " + pmam
+    const bs = this.state.BloodSugar
+    const hrs = hours
+    const dayFormatted = daysDict[dayOfWeek] + ", " + monthsDict[month] + " " + day
+    firebase.firestore().collection(firebase.auth().currentUser.uid).doc().set({
+      time:time,
+      date:dayFormatted,
+      hrs:hrs,
+      bs:bs
+    })
+    console.log('added')
+  }
  
   setMenuRef = ref => {
     this.setState({_menu:ref})
@@ -58,6 +109,32 @@ export default class WelcomePage extends Component {
 
 
 
+<Modal isVisible={this.state.modalOpen} style={{ width: "80%", marginLeft: "10%" }}>
+          <View style={{backgroundColor: '#323339', borderRadius:10, width:"100%", padding:20,}}>
+            <Text style={{fontFamily:"MuliSemi", fontSize:20, color:"white"}}>New Entry</Text>
+  <Text style={{fontFamily:"MuliLight", fontSize:16, color:"white", opacity:0.7}}>{this.state.CurrentTimeDate}</Text>
+            <Form style={{alignItems:"center",}}>
+            <Item style={styles.input}>
+        <Input 
+          autoCorrect={false}
+          autoCapitalize="none"
+          placeholder = "Enter Blood Sugar Level"
+          style={{color:"white"}}
+          keyboardType="numeric"
+          placeholderTextColor="white"
+          onChangeText= {(BloodSugar) => this.setState({BloodSugar})}
+        />
+      </Item>
+      </Form>
+              
+              <View style={{ flexDirection:'row', justifyContent:'space-between', marginTop:20,}}>
+                <Button style={{ backgroundColor:'#646874', width:100,  borderRadius:200,  justifyContent:'center'}} onPress={() => this.setState({modalOpen:false})}><Text style={{color:"white", fontFamily:"MuliRegular"}}>Cancel</Text></Button>
+                <Button style={{ backgroundColor:'#FFAE6C', width:100,  borderRadius:200,  justifyContent:'center'}} onPress={() => {this.setState({modalOpen:false});this.addLog()}}><Text style={{color:"#323339", fontFamily:"MuliRegular"}}>Submit</Text></Button>
+              </View>
+            </View>
+          </Modal>
+
+
 
         
 
@@ -69,7 +146,7 @@ export default class WelcomePage extends Component {
           ref={this.setMenuRef}
           button={<TouchableOpacity onPress={this.showMenu}><MaterialCommunityIcons name="settings-outline" size={30} color="#23262D" /></TouchableOpacity>}
         >
-          <MenuItem onPress={this.hideMenu}><Text style={{fontFamily:"MuliBold", color:"white"}}>Eshwar</Text></MenuItem>
+          <MenuItem onPress={this.hideMenu}><Text style={{fontFamily:"MuliBold", color:"white"}}>{firebase.auth().currentUser.displayName}</Text></MenuItem>
           <MenuItem onPress={()=>this.signOut()}><Text style={{fontFamily:"MuliBold", color:"#FFAE6C"}}>Sign Out</Text></MenuItem>
         </Menu>
         </View>
@@ -151,7 +228,7 @@ export default class WelcomePage extends Component {
 
     <View style={{flexDirection:"row", alignItems:'center', justifyContent:"space-evenly", marginTop:25,}}>
     <View style={{alignItems:'center', justifyContent:'center'}}>
-    <TouchableOpacity activeOpacity={0.8}><View style={{width:75, height:75, borderRadius:75, backgroundColor:"#23262D", alignItems:'center', justifyContent:'center', elevation:5,}}><AntDesign name="plus" size={30} color="white" /></View></TouchableOpacity>
+    <TouchableOpacity activeOpacity={0.8} onPress={()=> {this.setState({modalOpen:true});this.getTime()}}><View style={{width:75, height:75, borderRadius:75, backgroundColor:"#23262D", alignItems:'center', justifyContent:'center', elevation:5,}}><AntDesign name="plus" size={30} color="white" /></View></TouchableOpacity>
     <Text style={{color:'#23262D', fontSize:16, fontFamily:'MuliBold',marginTop:5,}}>New Log</Text>
     </View>
     <View style={{alignItems:'center', justifyContent:'center'}}>
@@ -206,5 +283,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFAE6C',
+  },
+  input:{
+    backgroundColor:'#646874', 
+    borderRadius:10, 
+    marginLeft:0, 
+    marginTop:20,
+    paddingLeft:10,
+    elevation: 3,
+    borderBottomWidth:0,
   },
 });
