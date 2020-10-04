@@ -1,6 +1,6 @@
 # Dulcis 
+<img src="https://i.ibb.co/2PX1yZ4/logo.png"  height="100" width="100"/> <br>
 A revolutionary management app for diabetics
-
 ### Inspiration
 Directly involving people most affected by a problem is often the solution to many issues. With a rapidly rising number of over 3 million Canadians with Diabetes, we decided to create a simple, but revolutionary application for diabetics to stay in control of their condition. Combining the idea of gamification and a virtual assistant is how Dulcis was created. 
 
@@ -18,6 +18,7 @@ Dulcis revolutionizes the way diabetics can keep track of their blood sugar leve
 2. My vision is blurry
 3. I’m very thirsty
 * After some follow up questions, Drake will make a recommendation based on your symptoms to visit a doctor, monitor your symptoms, or if you are good to go. 
+* Try out a demo of Drake the Chatbot here: https://bot.dialogflow.com/47e40892-d48a-4373-a227-9e9ff2cb77df
 #### Blood Sugar Logs
 * By simply clicking ‘new log’, you can add a new blood sugar log at a certain time in the day by entering your blood sugar level after getting a reading from your device. Dulcis will automatically do some analysis and calculations to provide you with a graph, and average stats. 
 
