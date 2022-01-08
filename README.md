@@ -1,6 +1,10 @@
 # Dulcis 
 <img src="https://i.ibb.co/2PX1yZ4/logo.png"  height="100" width="100"/> <br>
 A revolutionary management app for diabetics
+
+### Explanatory video (3 minutes)
+https://www.youtube.com/watch?v=PdTgYJRXTSU&ab_channel=EshwaraChock
+
 ### Inspiration
 Directly involving people most affected by a problem is often the solution to many issues. With a rapidly rising number of over 3 million Canadians with Diabetes, we decided to create a simple, but revolutionary application for diabetics to stay in control of their condition. Combining the idea of gamification and a virtual assistant is how Dulcis was created. 
 
