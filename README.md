@@ -22,7 +22,7 @@ Dulcis revolutionizes the way diabetics can keep track of their blood sugar leve
 #### Blood Sugar Logs
 * By simply clicking ‘new log’, you can add a new blood sugar log at a certain time in the day by entering your blood sugar level after getting a reading from your device. Dulcis will automatically do some analysis and calculations to provide you with a graph, and average stats. 
 
-### How we built it
+### How I built it
 The application was developed using a react native, a universally used JS framework for building cross platform applications for android and ios. We used react native in a combination with Typescript, an open source language which adds strong typing to vanilla JS, and expo, an open source platform for building react native applications. Services such as Firebase (auth and database), Clarifai (ML image classification model), and DialogFlow (chatbot) were also used to create the application. 
 
 ### Next Steps
